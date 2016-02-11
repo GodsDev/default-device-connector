@@ -1,0 +1,19 @@
+{
+    "name": "godsdev/default-device-connector",
+    "description": "Connector to default device service",
+    "authors": [
+        {
+            "name": "GodsDev",
+            "email": "rejthar@gods.cz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+      "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GodsDev\\DefaultDeviceConnector\\": "src/"
+        }
+    },
+}
