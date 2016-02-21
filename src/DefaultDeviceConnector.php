@@ -92,12 +92,12 @@ class DefaultDeviceConnector {
         //$h = apache_request_headers();
         // Opera mini
         //if (isset($h['X-OperaMini-Phone-UA'])) {
-        if (isset($_SERVER['X-OperaMini-Phone-UA'])) {//@todo check with real OperaMini!
-            $characteristics["x-operamini-phone-ua"] = $_SERVER['X-OperaMini-Phone-UA'];
+        if (isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA'])) {
+            $characteristics["x-operamini-phone-ua"] = $_SERVER['HTTP_X_OPERAMINI_PHONE_UA'];
         }
         // https://dev.opera.com/blog/introducing-device-stock-ua/
-        if (isset($_SERVER['Device-Stock-UA'])) {
-            $characteristics['device-stock-ua'] = $_SERVER['Device-Stock-UA'];
+        if (isset($_SERVER['HTTP_DEVICE_STOCK_UA'])) {
+            $characteristics['device-stock-ua'] = $_SERVER['HTTP_DEVICE_STOCK_UA'];
         }
         return $this->setCharacteristics($characteristics);
     }
