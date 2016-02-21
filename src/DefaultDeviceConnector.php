@@ -193,7 +193,9 @@ class DefaultDeviceConnector {
      */
     private function setError($error) {
         $this->error = $error;
-        error_log("default-device-connector " . (string) $error . " with ch=" . http_build_query($this->characteristics), 3, __DIR__ . '/log/error.log.' . date('Y-m-d') . '.log');
+        error_log(date('Y-m-d H:i:s') . ' ' . __FILE__ . ' '
+                . "default-device-connector " . (string) $error . " with ch=" . http_build_query($this->characteristics) . PHP_EOL, 
+                3, __DIR__ . '/log/error.log.' . date('Y-m-d') . '.log');
         return false;
     }
 
