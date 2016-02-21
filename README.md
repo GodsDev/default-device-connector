@@ -1,6 +1,9 @@
 # default-device-connector
 PHP connector for defauldevice service
 
+For security (not revealing files that SHOULD NOT be accessed through browser)
+mod_alias.c SHOULD be enabled in the directory where this library lives.
+
 Usage:
 ```php
 $deviceInfo = new GodsDev\DefaultDeviceConnector\DefaultDeviceConnector(); //may be initiated with non default latest API URL
