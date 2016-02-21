@@ -136,17 +136,17 @@ class DefaultDeviceConnector {
      */
     public function request() {
         if (!$this->characteristics['user_agent'] || empty($this->characteristics['user_agent'])) {
-            return !($this->error = 'user agent missing');
+            return $this->setError('user agent missing');
         }
 
         //this workaround below may lead to proposing Android HTML5 to browser where Android xHTML would be more appropriate
         //@todo enable API to accept x-operamini-phone-ua and then remove this condition
-        if (isset($this->characteristics["x-operamini-phone-ua"])) {
+        if (isset($this->characteristics["x-operamini-phone-ua"]) && !empty($this->characteristics["x-operamini-phone-ua"])) {
             $this->characteristics['user_agent'] = $this->characteristics["x-operamini-phone-ua"];
             unset($this->characteristics["x-operamini-phone-ua"]);
         }
         //@todo enable API to accept x-operamini-phone-ua and then remove this condition
-        if (isset($this->characteristics['device-stock-ua'])) {
+        if (isset($this->characteristics['device-stock-ua']) && !empty($this->characteristics['device-stock-ua'])) {
             $this->characteristics['user_agent'] = $this->characteristics['device-stock-ua'];
             unset($this->characteristics['device-stock-ua']);
         }
@@ -155,11 +155,10 @@ class DefaultDeviceConnector {
         //@todo POST instead of GET        
         $resultArray = ddc_backyard_getJsonAsArray($this->apiUrl . "?" . http_build_query($this->characteristics));
         if (!$resultArray) {
-            return !($this->error = 'not json');
+            return $this->setError('not json');
         }
         if (isset($resultArray['error'])) {
-            $this->error = $resultArray['error'];
-            return false;
+            return $this->setError($resultArray['error']);
         }
         $this->error = NULL;
         return $this->properties = $resultArray;
@@ -185,6 +184,17 @@ class DefaultDeviceConnector {
         }
         $this->request();
         return $this->getMarkup();
+    }
+
+    /**
+     * Log error and always return false
+     * @param mixed $error string preffered
+     * @return false
+     */
+    private function setError($error) {
+        $this->error = $error;
+        error_log("default-device-connector " . (string) $error . " with ch=" . http_build_query($this->characteristics), 3, __DIR__ . '/log/error.log.' . date('Y-m-d') . '.log');
+        return false;
     }
 
 }
