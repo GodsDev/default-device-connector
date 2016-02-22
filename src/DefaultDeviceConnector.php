@@ -165,7 +165,7 @@ class DefaultDeviceConnector {
     }
 
     /**
-     * May be called without previous request() call
+     * If called without previous request() call, then request() call is initiated
      * @return string xhtml, desktop, html5 (default even if API call fails)
      */
     public function getMarkup() {
@@ -184,6 +184,31 @@ class DefaultDeviceConnector {
         }
         $this->request();
         return $this->getMarkup();
+    }
+
+    /**
+     * Usage:
+     *  getProperty('operating_system_name')
+     *  getProperty('browser')
+     *  getProperty('vendor')
+     * 
+     * If called without previous request() call, then request() call is initiated
+     * If the value is unavailable, 'unknown' is returned.
+     * 
+     * @param string $propertyName
+     * @return string
+     */
+    public function getProperty($propertyName) {
+        if (!empty($this->properties)) {
+            if (isset($this->properties[$propertyName])) {
+                return $this->properties[$propertyName];
+            }
+            return 'unknown';
+        } elseif (!is_null($this->error)) {
+            return 'unknown';
+        }
+        $this->request();
+        return $this->getProperty($propertyName);
     }
 
     /**

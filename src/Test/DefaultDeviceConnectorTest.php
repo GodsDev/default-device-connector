@@ -93,7 +93,7 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
 //        $this->assertEquals('not json', $deviceInfo->error);
 //    }
 
-    public function testRequestDefaultDeviceConnectorMissingUserAgent() {
+    public function testRequestMissingUserAgent() {
         $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
         $characteristics = array(
             'x-wap-profile' => 'b',
@@ -105,7 +105,7 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('user agent missing', $deviceInfo->error);
     }
 
-    public function testRequestDefaultDeviceConnectorAndroid() {
+    public function testRequestAndroid() {
         $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
         $characteristics = array(
             'user_agent' => 'Mozilla/5.0 (Linux; Android 4.2.2; B1-711 Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Safari/537.36',
@@ -119,7 +119,7 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('Android', $result['operating_system_name']);
     }
 
-    public function testRequestDefaultDeviceConnectorWP() {
+    public function testRequestWindowsPhone() {
         $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
         $characteristics = array(
             'user_agent' => 'MWP/1.0/Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 925) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537',
@@ -132,7 +132,7 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('WindowsPhone', $result['operating_system_name']);
     }
 
-    public function testRequestDefaultDeviceConnectoriOS() {
+    public function testGetPropertyiOS() {
         $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
         $characteristics = array(
             'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13C71 Safari/601.1',
@@ -140,9 +140,11 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
             'accept' => 'text/html,application/xhtml xml,application/xml;q=0.9,*/*;q=0.8',
         );
         $deviceInfo->setCharacteristics($characteristics);
-        $result = $deviceInfo->request();
-        $this->assertNull($deviceInfo->error);
-        $this->assertEquals('iOS', $result['operating_system_name']);
+//        $result = $deviceInfo->request();
+//        $this->assertNull($deviceInfo->error);
+//        $this->assertEquals('iOS', $result['operating_system_name']);
+        $this->assertEquals('iOS', $deviceInfo->getProperty('operating_system_name'));
+        $this->assertEquals('Apple', $deviceInfo->getProperty('vendor'));
     }
 
     public function testGetMarkupDefaultValue() {
