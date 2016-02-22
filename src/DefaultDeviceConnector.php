@@ -210,6 +210,26 @@ class DefaultDeviceConnector {
         $this->request();
         return $this->getProperty($propertyName);
     }
+    
+    /**
+     * preg_match against all the field that may contain User-agent
+     * Returns true with first match
+     * 
+     * @param array $regexp
+     * @return boolean
+     */
+    public function matchUserAgent(array $regexp) {
+        foreach (array('user_agent', 'x-operamini-phone-ua', 'device-stock-ua') as $fieldName) {
+            if (isset($this->characteristics[$fieldName])) {
+                foreach ($regexp as $v) {
+                    if (preg_match("/{$v}/i", $this->characteristics[$fieldName])){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Log error and always return false
@@ -219,8 +239,7 @@ class DefaultDeviceConnector {
     private function setError($error) {
         $this->error = $error;
         error_log(date('Y-m-d H:i:s') . ' ' . __FILE__ . ' '
-                . "default-device-connector " . (string) $error . " with ch=" . http_build_query($this->characteristics) . PHP_EOL, 
-                3, __DIR__ . '/log/error.log.' . date('Y-m-d') . '.log');
+                . "default-device-connector " . (string) $error . " with ch=" . http_build_query($this->characteristics) . PHP_EOL, 3, __DIR__ . '/log/error.log.' . date('Y-m-d') . '.log');
         return false;
     }
 

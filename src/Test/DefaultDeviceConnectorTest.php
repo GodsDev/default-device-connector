@@ -158,7 +158,7 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
             'x-wap-profile' => 'b3',
             'accept' => 'c2',
             'x-operamini-phone-ua' => 'e3',
-            //'device-stock-ua' => 'f5',
+                //'device-stock-ua' => 'f5',
         );
         $characteristicsExpected = array(
             'user_agent' => 'e3',
@@ -188,6 +188,22 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
         $deviceInfo->setCharacteristics($characteristicsOriginal);
         $deviceInfo->request();
         $this->assertEquals($characteristicsExpected, $deviceInfo->getCharacteristics());
+    }
+
+    public function testMatchUserAgent() {
+        $characteristics = array(
+            'user_agent' => 'a2',
+            'x-wap-profile' => 'b3',
+            'accept' => 'c2',
+            'x-operamini-phone-ua' => 'alfae3',
+            'device-stock-ua' => 'f5beta',
+        );
+        $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
+        $deviceInfo->setCharacteristics($characteristics);
+        $this->assertTrue($deviceInfo->matchUserAgent(array('a1', 'a2')));
+        $this->assertFalse($deviceInfo->matchUserAgent(array('a1', 'a3')));
+        $this->assertTrue($deviceInfo->matchUserAgent(array('a1', 'e3', 'a3')));
+        $this->assertTrue($deviceInfo->matchUserAgent(array('f5')));
     }
 
 }
