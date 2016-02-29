@@ -103,11 +103,17 @@ class DefaultDeviceConnector {
     }
 
     /**
-     * to be accessed only by PHPUnit tests
-     * @return array
+     * to be accessed by PHPUnit tests or to get User-agent
+     * Call example: ->getCharacteristics('user_agent');
+     * @return mixed array OR string OR null
      */
-    public function getCharacteristics() {
-        return $this->characteristics;
+    public function getCharacteristics($ch = NULL) {
+        if (is_null($ch)) {
+            return $this->characteristics;
+        } elseif (isset($this->characteristics[$ch])) {
+            return (string) $this->characteristics[$ch];
+        }
+        return NULL;
     }
 
     /**

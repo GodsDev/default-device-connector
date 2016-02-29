@@ -206,4 +206,17 @@ class DefaultDeviceConnectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($deviceInfo->matchUserAgent(array('f5')));
     }
 
+    public function testGetCharacteristicsUserAgent() {
+        $characteristics = array(
+            'user_agent' => 'a2',
+            'x-wap-profile' => 'b3',
+            'accept' => 'c2',
+            'x-operamini-phone-ua' => 'alfae3',
+            'device-stock-ua' => 'f5beta',
+        );
+        $deviceInfo = new \GodsDev\DefaultDeviceConnector\DefaultDeviceConnector();
+        $deviceInfo->setCharacteristics($characteristics);
+        $this->assertEquals('a2', $deviceInfo->getCharacteristics('user_agent'));
+    }
+
 }
